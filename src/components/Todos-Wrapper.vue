@@ -3,8 +3,8 @@
   <div class="todos__wrapper">
   <div class="todos__wrapper-input">
     <form action="submit" class="todos__wrapper-form">
-      <input type="text" name="todo" id="todoInput" placeholder="Enter a new Task">
-      <button type="button">Add</button>
+      <input type="text" name="todo" id="todoInput" placeholder="Enter a new Task" v-model="todoInput">
+      <button id="todosAddButton" @click="addTodo" type="submit">Add</button>
     </form>
   </div>
    <TodosGrid/>
@@ -13,31 +13,30 @@
 
 <script>
 import TodosGrid from './Todos-Grid.vue'
+
+
 export default {
   name: 'TodosWrapper',
   components: {
     TodosGrid,
-    
-
+  },
+  data (){
+    const storedTodos = localStorage.getItem("todos");
+    return{
+      todos: storedTodos ? JSON.parse(storedTodos) : [],
+      todoInput: ''
+    }
+  },
+  methods: {
+    addTodo: function(){
+      console.log(JSON.stringify(this.todos))
+      // this.todos= [...this.todos,this.todoInput]
+      this.todos.push(this.todoInput)
+      localStorage.setItem("todos", JSON.stringify(this.todos))
+      console.log(JSON.stringify(this.todos))
+      this.todosInput = ''
+    }
   }
-
 }
 </script>
 
-Add "scoped" attribute to limit CSS to this component only
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
